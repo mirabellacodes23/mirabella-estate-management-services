@@ -42,7 +42,7 @@ class NewsSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: const Text(
-                  'OFFICIAL NEWS & CDA UPDATE',
+                  'OFFICIAL INFORMATION & VERIFIED NOTICES',
                   style: TextStyle(
                     color: AppColors.blue600,
                     fontWeight: FontWeight.w800,
@@ -53,7 +53,7 @@ class NewsSection extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               Text(
-                'CDA Possession Update & Verified Estate Management Services',
+                'Professional Estate Management & Verified Property Solutions',
                 style: TextStyle(
                   fontSize: isMobile ? 30 : 44,
                   height: 1.12,
@@ -63,7 +63,7 @@ class NewsSection extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               Text(
-                'Mirabella Estate Management Services is committed to keeping its valued clients informed with the latest, verified, and authentic information regarding property developments and official updates.',
+                'Mirabella Estate Management Services is a professional estate management company providing transparent, verified, and lawful property solutions across multiple residential, commercial, and mixed-use projects.',
                 style: TextStyle(
                   fontSize: isMobile ? 15.5 : 17,
                   height: 1.65,
@@ -72,7 +72,8 @@ class NewsSection extends StatelessWidget {
               ),
               const SizedBox(height: 14),
               Text(
-                'As per the recent letter issued by the Capital Development Authority regarding the handing over of possession of plots in various sectors, including E-12, C-14, and I-12, MEMS will be sharing and explaining these developments through its official website and social media platforms. Our objective is to provide clients and the general public with accurate, transparent, and reliable information based on official documentation.',
+                'Through our official website and social media platforms, we share authentic project information, official notices, possession-related guidance, documentation support, and estate management developments for the awareness and convenience of our valued clients.',
+
                 style: TextStyle(
                   fontSize: isMobile ? 15.5 : 17,
                   height: 1.65,
@@ -81,7 +82,7 @@ class NewsSection extends StatelessWidget {
               ),
               const SizedBox(height: 14),
               Text(
-                'MEMS is not operating as a local property dealer. We are a professional estate management organization committed to transparency, authenticity, and a lawful process. Our team works with relevant authorities, stakeholders, and clients to facilitate genuine property-related opportunities, including guidance, support, documentation assistance, and updates regarding plot possession and related matters.',
+                'MEMS is not operating as a local property dealer. We are a professional estate management organization committed to transparency, authenticity, documentation, and lawful processes. The recent CDA possession letter is being shared only as one verified official notice for public awareness, while our wider services include project guidance, possession support, documentation assistance, client facilitation, and complete estate management solutions.',
                 style: TextStyle(
                   fontSize: isMobile ? 15.5 : 17,
                   height: 1.65,
