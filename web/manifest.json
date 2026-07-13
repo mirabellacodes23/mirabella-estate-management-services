@@ -1,11 +1,11 @@
 {
-    "name": "mirabellaestatemanagementservices",
-    "short_name": "mirabellaestatemanagementservices",
+    "name": "Mirabella Estate Management Services",
+    "short_name": "MEMS",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#062F35",
+    "theme_color": "#062F35",
+    "description": "Professional estate management, project facilitation and commercial property advisory services by Mirabella.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

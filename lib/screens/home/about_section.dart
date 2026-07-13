@@ -24,9 +24,14 @@ class AboutSection extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFF111827), Color(0xFF1F2937)], // gray-900 → gray-800
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF6E4B13),
+            Color(0xFFD6A84F),
+            Color(0xFFFFD978),
+            Color(0xFF8F641A),
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
         ),
       ),
       padding: EdgeInsets.symmetric(
@@ -62,15 +67,20 @@ class AboutSection extends StatelessWidget {
                             vertical: 8,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.blue600,
+                            color: const Color(0xFF111111),
                             borderRadius: BorderRadius.circular(999),
+                            border: Border.all(
+                              color: const Color(0xFFD6A84B),
+                              width: 1.2,
+                            ),
                           ),
                           child: const Text(
-                            'About Mirabella',
+                            'ABOUT MEMS',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                              color: Color(0xFFD6A84B),
+                              fontWeight: FontWeight.w800,
                               fontSize: 12,
+                              letterSpacing: 1.2,
                             ),
                           ),
                         ),
@@ -94,7 +104,7 @@ class AboutSection extends StatelessWidget {
                           'Established in 2015, MEMS has grown to become Islamabad\'s most trusted property management company. With over a decade of experience, we\'ve successfully managed hundreds of properties and served thousands of satisfied clients.',
                           textScaler: textScaler,
                           style: TextStyle(
-                            color: const Color(0xFF9CA3AF), // gray-400
+                            color: const Color(0xFFF2E8D3), // gray-400
                             fontSize: bodySize,
                             height: 1.6,
                           ),
@@ -104,7 +114,7 @@ class AboutSection extends StatelessWidget {
                           'Our mission is simple: to provide property owners with peace of mind through professional, transparent, and efficient management services. We combine local market expertise with modern technology to deliver exceptional results.',
                           textScaler: textScaler,
                           style: TextStyle(
-                            color: const Color(0xFF9CA3AF),
+                            color: const Color(0xFFF2E8D3),
                             fontSize: bodySize,
                             height: 1.6,
                           ),
@@ -264,9 +274,22 @@ class _StatCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.96),
-          borderRadius: BorderRadius.circular(16),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1B1B1B), Color(0xFF0D0D0D)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: const Color(0xFF6E511B), width: 1),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x66000000),
+              blurRadius: 14,
+              offset: Offset(0, 8),
+            ),
+          ],
         ),
+
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -300,7 +323,7 @@ class _StatItem extends StatelessWidget {
             value,
             textScaler: scaler,
             style: const TextStyle(
-              color: AppColors.blue600,
+              color: const Color(0xFFD6A84B),
               fontSize: 18,
               fontWeight: FontWeight.w800,
             ),
@@ -310,7 +333,7 @@ class _StatItem extends StatelessWidget {
             label,
             textScaler: scaler,
             style: const TextStyle(
-              color: Color(0xFF374151), // gray-700
+              color: Color(0xFFF2E8D3),
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
@@ -349,14 +372,14 @@ class _MiniFeatureTile extends StatelessWidget {
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.2);
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1F2937), // gray-800
+        color: const Color(0xFF111111), // gray-800
         borderRadius: BorderRadius.circular(14),
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: AppColors.blue600, size: 28),
+          Icon(icon, color: const Color(0xFFD6A84B), size: 28),
           const SizedBox(height: 10),
           Text(
             title,
@@ -372,7 +395,7 @@ class _MiniFeatureTile extends StatelessWidget {
             subtitle,
             textScaler: scaler,
             style: const TextStyle(
-              color: Color(0xFF9CA3AF), // gray-400
+              color: Color(0xFFF2E8D3), // gray-400
               fontSize: 13,
               height: 1.35,
             ),

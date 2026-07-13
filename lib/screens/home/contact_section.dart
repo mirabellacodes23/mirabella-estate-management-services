@@ -1,13 +1,15 @@
-// ===============================
-// File: lib/screens/home/contact_section.dart
-// Contact split: gradient info panel (left) + lead form (right)
-// Fully responsive + overflow-proof + Firebase integration
-// ===============================
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../constants/tokens.dart';
+
+const Color _gold = Color(0xFFD6A84B);
+const Color _deepBlack = Color(0xFF080808);
+const Color _charcoal = Color(0xFF171717);
+const Color _softCharcoal = Color(0xFF202020);
+const Color _cream = Color(0xFFF1E9D8);
+const Color _mutedCream = Color(0xFFCFC5B3);
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -22,6 +24,7 @@ class _ContactSectionState extends State<ContactSection> {
   final _email = TextEditingController();
   final _phone = TextEditingController();
   final _message = TextEditingController();
+
   String _propertyType = '';
   bool _isLoading = false;
 
@@ -57,22 +60,28 @@ class _ContactSectionState extends State<ContactSection> {
       _email.clear();
       _phone.clear();
       _message.clear();
+
       setState(() => _propertyType = '');
 
       _showResultOverlay(true, "Thank you! We'll contact you within 24 hours.");
     } catch (e) {
       _showResultOverlay(false, 'Failed to submit. Please try again.');
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
   void _showResultOverlay(bool success, String message) {
     final overlay = Overlay.of(context);
+
     final entry = OverlayEntry(
       builder: (context) => _ResultOverlay(success: success, message: message),
     );
+
     overlay.insert(entry);
+
     Future.delayed(const Duration(seconds: 2), () {
       entry.remove();
     });
@@ -80,13 +89,13 @@ class _ContactSectionState extends State<ContactSection> {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.2);
 
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xFFF8FAFC), Color(0xFFEFF6FF)],
+          colors: [Color(0xFF080808), Color(0xFF181818), Color(0xFF0D0D0D)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -97,38 +106,51 @@ class _ContactSectionState extends State<ContactSection> {
           constraints: const BoxConstraints(maxWidth: 1100),
           child: Column(
             children: [
-              // ---- Header chips & copy ----
+              // Header label
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
+                  horizontal: 16,
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFDBEAFE),
+                  color: const Color(0xFF111111),
                   borderRadius: BorderRadius.circular(999),
+                  border: Border.all(color: _gold, width: 1.2),
+                  boxShadow: [
+                    BoxShadow(color: _gold.withOpacity(0.12), blurRadius: 18),
+                  ],
                 ),
                 child: const Text(
-                  'Get In Touch',
+                  'GET IN TOUCH',
                   style: TextStyle(
-                    color: AppColors.blue800,
-                    fontWeight: FontWeight.w700,
+                    color: _gold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 12,
+                    letterSpacing: 1.3,
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+
+              const SizedBox(height: 14),
+
               Text(
                 'Start Your Journey With Us',
                 textScaler: scaler,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: w > 900 ? 34 : (w > 600 ? 30 : 26),
+                  fontSize: width > 900
+                      ? 34
+                      : width > 600
+                      ? 30
+                      : 26,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.gray900,
+                  color: Colors.white,
                   height: 1.2,
                 ),
               ),
-              const SizedBox(height: 6),
+
+              const SizedBox(height: 8),
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
@@ -138,24 +160,27 @@ class _ContactSectionState extends State<ContactSection> {
                   style: const TextStyle(
                     fontSize: 16,
                     height: 1.45,
-                    color: Color(0xFF4B5563),
+                    color: _mutedCream,
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
 
-              // ---- 3 contact tiles ----
+              const SizedBox(height: 24),
+
+              // Contact information tiles
               LayoutBuilder(
-                builder: (context, c) {
-                  int cross = 1;
-                  if (c.maxWidth >= 900) {
-                    cross = 3;
-                  } else if (c.maxWidth >= 600) {
-                    cross = 2;
+                builder: (context, constraints) {
+                  int crossAxisCount = 1;
+
+                  if (constraints.maxWidth >= 900) {
+                    crossAxisCount = 3;
+                  } else if (constraints.maxWidth >= 600) {
+                    crossAxisCount = 2;
                   }
 
                   const gap = 12.0;
-                  final double tileHeight = switch (cross) {
+
+                  final double tileHeight = switch (crossAxisCount) {
                     3 => 196,
                     2 => 210,
                     _ => 184,
@@ -165,13 +190,13 @@ class _ContactSectionState extends State<ContactSection> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: cross,
+                      crossAxisCount: crossAxisCount,
                       mainAxisSpacing: gap,
                       crossAxisSpacing: gap,
                       mainAxisExtent: tileHeight,
                     ),
                     itemCount: 3,
-                    itemBuilder: (context, i) {
+                    itemBuilder: (context, index) {
                       const tiles = [
                         _InfoTile(
                           icon: Icons.phone_rounded,
@@ -197,67 +222,78 @@ class _ContactSectionState extends State<ContactSection> {
                               'https://www.google.com/maps/place/Mirabella+Restaurant+%26+Hotel/@33.6356712,72.8460588,17z/data=!3m1!4b1!4m6!3m5!1s0x38df99de5a1647f9:0x38e47923f53177ff!8m2!3d33.6356712!4d72.8486391!16s%2Fg%2F11n34fmv_d?entry=ttu&g_ep=EgoyMDI1MDkyNC4wIKXMDSoASAFQAw%3D%3D',
                         ),
                       ];
-                      return tiles[i];
+
+                      return tiles[index];
                     },
                   );
                 },
               ),
+
               const SizedBox(height: 16),
 
-              // ---- Big card split ----
+              // Consultation information and contact form
               Material(
-                elevation: 16,
+                color: Colors.transparent,
+                elevation: 18,
+                shadowColor: Colors.black,
                 borderRadius: BorderRadius.circular(20),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: LayoutBuilder(
-                    builder: (context, c) {
-                      final twoCol = c.maxWidth >= 880;
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: _gold.withOpacity(0.45)),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(19),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final twoColumns = constraints.maxWidth >= 880;
 
-                      if (twoCol) {
-                        return Row(
+                        if (twoColumns) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Expanded(flex: 42, child: _LeftPanel()),
+                              Expanded(
+                                flex: 58,
+                                child: _RightForm(
+                                  formKey: _formKey,
+                                  name: _name,
+                                  email: _email,
+                                  phone: _phone,
+                                  message: _message,
+                                  propertyType: _propertyType,
+                                  isLoading: _isLoading,
+                                  onPropertyTypeChanged: (value) {
+                                    setState(() => _propertyType = value);
+                                  },
+                                  onSubmit: _submit,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+
+                        return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Expanded(flex: 42, child: _LeftPanel()),
-                            Expanded(
-                              flex: 58,
-                              child: _RightForm(
-                                formKey: _formKey,
-                                name: _name,
-                                email: _email,
-                                phone: _phone,
-                                message: _message,
-                                propertyType: _propertyType,
-                                isLoading: _isLoading,
-                                onPropertyTypeChanged: (v) =>
-                                    setState(() => _propertyType = v),
-                                onSubmit: _submit,
-                              ),
+                            const _LeftPanel(),
+                            _RightForm(
+                              formKey: _formKey,
+                              name: _name,
+                              email: _email,
+                              phone: _phone,
+                              message: _message,
+                              propertyType: _propertyType,
+                              isLoading: _isLoading,
+                              onPropertyTypeChanged: (value) {
+                                setState(() => _propertyType = value);
+                              },
+                              onSubmit: _submit,
                             ),
                           ],
                         );
-                      }
-
-                      // Mobile
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const _LeftPanel(),
-                          _RightForm(
-                            formKey: _formKey,
-                            name: _name,
-                            email: _email,
-                            phone: _phone,
-                            message: _message,
-                            propertyType: _propertyType,
-                            isLoading: _isLoading,
-                            onPropertyTypeChanged: (v) =>
-                                setState(() => _propertyType = v),
-                            onSubmit: _submit,
-                          ),
-                        ],
-                      );
-                    },
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -289,27 +325,37 @@ class _InfoTile extends StatelessWidget {
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.2);
 
     return Material(
-      color: Colors.white,
-      elevation: 10,
-      borderRadius: BorderRadius.circular(18),
-      child: InkWell(
-        onTap: () =>
-            launchUrlString(linkAction, mode: LaunchMode.externalApplication),
+      color: _charcoal,
+      elevation: 8,
+      shadowColor: Colors.black,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
+        side: BorderSide(color: _gold.withOpacity(0.38)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          launchUrlString(linkAction, mode: LaunchMode.externalApplication);
+        },
+        splashColor: _gold.withOpacity(0.12),
+        hoverColor: _gold.withOpacity(0.05),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 18, 16, 14),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE0F2FE),
-                  borderRadius: BorderRadius.circular(16),
-                ),
                 padding: const EdgeInsets.all(12),
-                child: Icon(icon, color: AppColors.blue600, size: 28),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2B210E),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: _gold.withOpacity(0.45)),
+                ),
+                child: Icon(icon, color: _gold, size: 28),
               ),
+
               const SizedBox(height: 8),
+
               Text(
                 title,
                 textScaler: scaler,
@@ -317,30 +363,37 @@ class _InfoTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontWeight: FontWeight.w800,
-                  color: AppColors.gray900,
+                  color: Colors.white,
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 2),
+
+              const SizedBox(height: 3),
+
               Text(
                 subtitle,
                 textScaler: scaler,
                 maxLines: 2,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Color(0xFF6B7280), fontSize: 13),
+                style: const TextStyle(color: _mutedCream, fontSize: 13),
               ),
+
               const Spacer(),
+
               TextButton(
                 style: TextButton.styleFrom(
+                  foregroundColor: _gold,
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(0, 0),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
-                onPressed: () => launchUrlString(
-                  linkAction,
-                  mode: LaunchMode.externalApplication,
-                ),
+                onPressed: () {
+                  launchUrlString(
+                    linkAction,
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
                 child: Text(
                   linkText,
                   textScaler: scaler,
@@ -348,7 +401,7 @@ class _InfoTile extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: AppColors.blue600,
+                    color: _gold,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -369,7 +422,13 @@ class _LeftPanel extends StatelessWidget {
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.2);
 
     return Container(
-      decoration: const BoxDecoration(gradient: AppGradients.blueBr),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF0A0A0A), Color(0xFF1D1D1D)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 28),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -378,39 +437,44 @@ class _LeftPanel extends StatelessWidget {
             'Ready to Get Started?',
             textScaler: scaler,
             style: const TextStyle(
-              color: Colors.white,
+              color: _gold,
               fontSize: 24,
               fontWeight: FontWeight.w800,
               height: 1.2,
             ),
           ),
+
           const SizedBox(height: 10),
+
           Text(
-            // NOTE: use double-quotes so the apostrophe in "We'll" doesn't break compilation.
             "Schedule a free consultation with our property management experts. We'll assess your property, discuss your goals, and create a customized plan.",
             textScaler: scaler,
-            style: const TextStyle(
-              color: Color(0xFFE0E7FF),
-              height: 1.6,
-              fontSize: 15,
-            ),
+            style: const TextStyle(color: _cream, height: 1.6, fontSize: 15),
           ),
+
           const SizedBox(height: 18),
+
           const _BulletRow(
             title: 'Free Property Assessment',
             subtitle: 'Comprehensive evaluation worth PKR 5,000',
           ),
+
           const SizedBox(height: 10),
+
           const _BulletRow(
             title: 'Market Analysis Report',
             subtitle: 'Detailed rental market insights',
           ),
+
           const SizedBox(height: 10),
+
           const _BulletRow(
             title: 'Custom Management Plan',
             subtitle: 'Tailored to your specific needs',
           ),
+
           const SizedBox(height: 18),
+
           const _HoursBlock(),
         ],
       ),
@@ -426,12 +490,13 @@ class _HoursBlock extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.12),
+        color: _gold.withOpacity(0.09),
         borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: _gold.withOpacity(0.4)),
       ),
-      child: Row(
-        children: const [
-          Icon(Icons.schedule_rounded, color: Colors.white),
+      child: const Row(
+        children: [
+          Icon(Icons.schedule_rounded, color: _gold),
           SizedBox(width: 10),
           Expanded(child: _HoursText()),
         ],
@@ -443,15 +508,19 @@ class _HoursBlock extends StatelessWidget {
 class _BulletRow extends StatelessWidget {
   final String title;
   final String subtitle;
+
   const _BulletRow({required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.2);
+
     return Row(
       children: [
-        const Icon(Icons.check_circle_rounded, color: Colors.white, size: 22),
+        const Icon(Icons.check_circle_rounded, color: _gold, size: 22),
+
         const SizedBox(width: 10),
+
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -464,11 +533,13 @@ class _BulletRow extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+
               const SizedBox(height: 2),
+
               Text(
                 subtitle,
                 textScaler: scaler,
-                style: const TextStyle(color: Color(0xFFE0E7FF), fontSize: 12),
+                style: const TextStyle(color: _mutedCream, fontSize: 12),
               ),
             ],
           ),
@@ -484,6 +555,7 @@ class _HoursText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.2);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -495,16 +567,19 @@ class _HoursText extends StatelessWidget {
             fontWeight: FontWeight.w700,
           ),
         ),
+
         const SizedBox(height: 4),
+
         Text(
           'Monday - Saturday: 9:00 AM - 6:00 PM',
           textScaler: scaler,
-          style: const TextStyle(color: Color(0xFFE0E7FF), fontSize: 12),
+          style: const TextStyle(color: _mutedCream, fontSize: 12),
         ),
+
         Text(
           'Sunday: Closed',
           textScaler: scaler,
-          style: const TextStyle(color: Color(0xFFE0E7FF), fontSize: 12),
+          style: const TextStyle(color: _mutedCream, fontSize: 12),
         ),
       ],
     );
@@ -537,36 +612,59 @@ class _RightForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.15);
 
-    InputDecoration deco(String label, {String? hint}) => InputDecoration(
-      labelText: label,
-      hintText: hint,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFFE5E7EB), width: 2),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.blue600, width: 2),
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-    );
+    InputDecoration decoration(String label, {String? hint}) {
+      return InputDecoration(
+        labelText: label,
+        hintText: hint,
+        filled: true,
+        fillColor: _softCharcoal,
+        labelStyle: const TextStyle(color: _mutedCream),
+        floatingLabelStyle: const TextStyle(
+          color: _gold,
+          fontWeight: FontWeight.w600,
+        ),
+        hintStyle: const TextStyle(color: Color(0xFF807A70)),
+        errorStyle: const TextStyle(color: Color(0xFFFF8A80)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: _gold.withOpacity(0.28), width: 1.4),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: _gold, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFEF5350), width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFEF5350), width: 2),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 14,
+        ),
+      );
+    }
 
     return AnimatedPadding(
       duration: const Duration(milliseconds: 150),
       curve: Curves.easeOut,
       padding: EdgeInsets.only(bottom: bottomInset > 0 ? bottomInset : 0),
       child: Container(
-        color: Colors.white,
+        color: const Color(0xFF101010),
         padding: const EdgeInsets.all(28),
         child: Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: LayoutBuilder(
-            builder: (context, c) {
-              final wide = c.maxWidth >= 560;
+            builder: (context, constraints) {
+              final wide = constraints.maxWidth >= 560;
 
               return SingleChildScrollView(
                 primary: false,
@@ -582,78 +680,58 @@ class _RightForm extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.gray900,
+                        color: Colors.white,
                       ),
                     ),
+
                     const SizedBox(height: 16),
 
-                    // Name
                     TextFormField(
                       controller: name,
                       enabled: !isLoading,
+                      cursorColor: _gold,
+                      style: const TextStyle(color: Colors.white),
                       textInputAction: TextInputAction.next,
                       autofillHints: const [AutofillHints.name],
                       scrollPadding: const EdgeInsets.only(bottom: 120),
-                      decoration: deco(
+                      decoration: decoration(
                         'Full Name *',
                         hint: 'Enter your full name',
                       ),
-                      validator: (v) =>
-                          (v == null || v.trim().isEmpty) ? 'Required' : null,
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context).nextFocus(),
+                      validator: (value) {
+                        return value == null || value.trim().isEmpty
+                            ? 'Required'
+                            : null;
+                      },
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).nextFocus();
+                      },
                     ),
+
                     const SizedBox(height: 12),
 
-                    // Email + Phone
                     if (wide)
                       Row(
                         children: [
                           Expanded(
-                            child: TextFormField(
+                            child: _EmailField(
                               controller: email,
                               enabled: !isLoading,
-                              textInputAction: TextInputAction.next,
-                              autofillHints: const [AutofillHints.email],
-                              scrollPadding: const EdgeInsets.only(bottom: 120),
-                              decoration: deco(
+                              decoration: decoration(
                                 'Email *',
                                 hint: 'your@email.com',
                               ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (v) {
-                                if (v == null || v.trim().isEmpty) {
-                                  return 'Required';
-                                }
-                                final ok = RegExp(
-                                  r'^\S+@\S+\.\S+$',
-                                ).hasMatch(v.trim());
-                                return ok ? null : 'Invalid email';
-                              },
-                              onFieldSubmitted: (_) =>
-                                  FocusScope.of(context).nextFocus(),
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: TextFormField(
+                            child: _PhoneField(
                               controller: phone,
                               enabled: !isLoading,
-                              textInputAction: TextInputAction.next,
-                              autofillHints: const [
-                                AutofillHints.telephoneNumber,
-                              ],
-                              scrollPadding: const EdgeInsets.only(bottom: 120),
-                              decoration: deco(
+                              decoration: decoration(
                                 'Phone *',
                                 hint: '+92 300 1234567',
                               ),
-                              keyboardType: TextInputType.phone,
-                              validator: (v) => (v == null || v.trim().isEmpty)
-                                  ? 'Required'
-                                  : null,
-                              onFieldSubmitted: (_) =>
-                                  FocusScope.of(context).nextFocus(),
                             ),
                           ),
                         ],
@@ -661,53 +739,34 @@ class _RightForm extends StatelessWidget {
                     else
                       Column(
                         children: [
-                          TextFormField(
+                          _EmailField(
                             controller: email,
                             enabled: !isLoading,
-                            textInputAction: TextInputAction.next,
-                            autofillHints: const [AutofillHints.email],
-                            scrollPadding: const EdgeInsets.only(bottom: 120),
-                            decoration: deco('Email *', hint: 'your@email.com'),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (v) {
-                              if (v == null || v.trim().isEmpty)
-                                return 'Required';
-                              final ok = RegExp(
-                                r'^\S+@\S+\.\S+$',
-                              ).hasMatch(v.trim());
-                              return ok ? null : 'Invalid email';
-                            },
-                            onFieldSubmitted: (_) =>
-                                FocusScope.of(context).nextFocus(),
+                            decoration: decoration(
+                              'Email *',
+                              hint: 'your@email.com',
+                            ),
                           ),
                           const SizedBox(height: 12),
-                          TextFormField(
+                          _PhoneField(
                             controller: phone,
                             enabled: !isLoading,
-                            textInputAction: TextInputAction.next,
-                            autofillHints: const [
-                              AutofillHints.telephoneNumber,
-                            ],
-                            scrollPadding: const EdgeInsets.only(bottom: 120),
-                            decoration: deco(
+                            decoration: decoration(
                               'Phone *',
                               hint: '+92 300 1234567',
                             ),
-                            keyboardType: TextInputType.phone,
-                            validator: (v) => (v == null || v.trim().isEmpty)
-                                ? 'Required'
-                                : null,
-                            onFieldSubmitted: (_) =>
-                                FocusScope.of(context).nextFocus(),
                           ),
                         ],
                       ),
+
                     const SizedBox(height: 12),
 
-                    // Property type
                     DropdownButtonFormField<String>(
                       value: propertyType.isEmpty ? null : propertyType,
-                      decoration: deco('Property Type'),
+                      dropdownColor: _softCharcoal,
+                      iconEnabledColor: _gold,
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      decoration: decoration('Property Type'),
                       items: const [
                         DropdownMenuItem(
                           value: 'residential',
@@ -724,29 +783,38 @@ class _RightForm extends StatelessWidget {
                       ],
                       onChanged: isLoading
                           ? null
-                          : (v) => onPropertyTypeChanged(v ?? ''),
+                          : (value) {
+                              onPropertyTypeChanged(value ?? '');
+                            },
                     ),
+
                     const SizedBox(height: 12),
 
-                    // Message
                     TextFormField(
                       controller: message,
                       enabled: !isLoading,
+                      cursorColor: _gold,
+                      style: const TextStyle(color: Colors.white),
                       textInputAction: TextInputAction.done,
                       scrollPadding: const EdgeInsets.only(bottom: 160),
-                      decoration: deco(
+                      decoration: decoration(
                         'Your Message *',
                         hint: 'Tell us about your property management needs...',
                       ),
                       minLines: 4,
                       maxLines: 6,
-                      validator: (v) =>
-                          (v == null || v.trim().isEmpty) ? 'Required' : null,
-                      onFieldSubmitted: (_) => onSubmit(),
+                      validator: (value) {
+                        return value == null || value.trim().isEmpty
+                            ? 'Required'
+                            : null;
+                      },
+                      onFieldSubmitted: (_) {
+                        onSubmit();
+                      },
                     ),
+
                     const SizedBox(height: 14),
 
-                    // Submit
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
@@ -760,30 +828,41 @@ class _RightForm extends StatelessWidget {
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
+                                    Colors.black,
                                   ),
                                 ),
                               )
-                            : const Text('Send Message'),
+                            : const Text(
+                                'Send Message',
+                                style: TextStyle(fontWeight: FontWeight.w700),
+                              ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.blue600,
-                          foregroundColor: Colors.white,
+                          backgroundColor: _gold,
+                          foregroundColor: Colors.black,
+                          disabledBackgroundColor: _gold.withOpacity(0.55),
+                          disabledForegroundColor: Colors.black54,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           elevation: 10,
+                          shadowColor: _gold.withOpacity(0.28),
                         ),
                         onPressed: isLoading ? null : onSubmit,
                       ),
                     ),
-                    const SizedBox(height: 6),
+
+                    const SizedBox(height: 8),
+
                     const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'By submitting this form, you agree to our privacy policy and terms of service.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black45, fontSize: 12),
+                        style: TextStyle(
+                          color: Color(0xFF918A7D),
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ],
@@ -797,7 +876,78 @@ class _RightForm extends StatelessWidget {
   }
 }
 
-// Success/Error overlay widget
+class _EmailField extends StatelessWidget {
+  final TextEditingController controller;
+  final bool enabled;
+  final InputDecoration decoration;
+
+  const _EmailField({
+    required this.controller,
+    required this.enabled,
+    required this.decoration,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      enabled: enabled,
+      cursorColor: _gold,
+      style: const TextStyle(color: Colors.white),
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.email],
+      scrollPadding: const EdgeInsets.only(bottom: 120),
+      decoration: decoration,
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Required';
+        }
+
+        final validEmail = RegExp(r'^\S+@\S+\.\S+$').hasMatch(value.trim());
+
+        return validEmail ? null : 'Invalid email';
+      },
+      onFieldSubmitted: (_) {
+        FocusScope.of(context).nextFocus();
+      },
+    );
+  }
+}
+
+class _PhoneField extends StatelessWidget {
+  final TextEditingController controller;
+  final bool enabled;
+  final InputDecoration decoration;
+
+  const _PhoneField({
+    required this.controller,
+    required this.enabled,
+    required this.decoration,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      enabled: enabled,
+      cursorColor: _gold,
+      style: const TextStyle(color: Colors.white),
+      textInputAction: TextInputAction.next,
+      autofillHints: const [AutofillHints.telephoneNumber],
+      scrollPadding: const EdgeInsets.only(bottom: 120),
+      decoration: decoration,
+      keyboardType: TextInputType.phone,
+      validator: (value) {
+        return value == null || value.trim().isEmpty ? 'Required' : null;
+      },
+      onFieldSubmitted: (_) {
+        FocusScope.of(context).nextFocus();
+      },
+    );
+  }
+}
+
 class _ResultOverlay extends StatefulWidget {
   final bool success;
   final String message;
@@ -816,15 +966,15 @@ class _ResultOverlayState extends State<_ResultOverlay>
   )..forward();
 
   late final Animation<double> _scaleAnimation = Tween<double>(
-    begin: 0.0,
-    end: 1.0,
+    begin: 0,
+    end: 1,
   ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
 
-  late final Animation<double> _fadeAnimation =
-      Tween<double>(begin: 0.0, end: 1.0).animate(
+  late final Animation<double> _fadeAnimation = Tween<double>(begin: 0, end: 1)
+      .animate(
         CurvedAnimation(
           parent: _controller,
-          curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
+          curve: const Interval(0, 0.5, curve: Curves.easeOut),
         ),
       );
 
@@ -837,7 +987,7 @@ class _ResultOverlayState extends State<_ResultOverlay>
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.black26,
+      color: Colors.black54,
       child: Center(
         child: AnimatedBuilder(
           animation: _controller,
@@ -847,15 +997,18 @@ class _ResultOverlayState extends State<_ResultOverlay>
               child: Transform.scale(
                 scale: _scaleAnimation.value,
                 child: Container(
+                  constraints: const BoxConstraints(maxWidth: 420),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: _charcoal,
                     borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: _gold.withOpacity(0.6)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
+                        color: Colors.black.withOpacity(0.5),
+                        blurRadius: 24,
+                        offset: const Offset(0, 12),
                       ),
                     ],
                   ),
@@ -867,24 +1020,26 @@ class _ResultOverlayState extends State<_ResultOverlay>
                         height: 60,
                         decoration: BoxDecoration(
                           color: widget.success
-                              ? const Color(0xFF10B981)
-                              : const Color(0xFFEF4444),
+                              ? _gold
+                              : const Color(0xFFEF5350),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           widget.success ? Icons.check : Icons.close,
-                          color: Colors.white,
+                          color: widget.success ? Colors.black : Colors.white,
                           size: 36,
                         ),
                       ),
+
                       const SizedBox(height: 16),
+
                       Text(
                         widget.message,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF1F2937),
+                          color: Colors.white,
                         ),
                       ),
                     ],

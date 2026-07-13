@@ -41,11 +41,12 @@ class WhyUsSection extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 48),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFEFF6FF), Colors.white], // blue-50 → white
+            colors: [Color(0xFF0B0B0B), Color(0xFF14110C)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
+
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1200),
@@ -58,13 +59,13 @@ class WhyUsSection extends StatelessWidget {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFDBEAFE), // blue-100
+                    color: const Color(0xFF2A2112),
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: const Text(
-                    'Why Choose Mirabella',
+                    'WHY CHOOSE US',
                     style: TextStyle(
-                      color: AppColors.blue800,
+                      color: const Color(0xFFD6A84B),
                       fontWeight: FontWeight.w700,
                       fontSize: 12,
                     ),
@@ -77,7 +78,7 @@ class WhyUsSection extends StatelessWidget {
                   style: TextStyle(
                     fontSize: titleSize,
                     fontWeight: FontWeight.w800,
-                    color: AppColors.gray900,
+                    color: Colors.white,
                     height: 1.2,
                   ),
                 ),
@@ -90,7 +91,7 @@ class WhyUsSection extends StatelessWidget {
                     style: TextStyle(
                       fontSize: subtitleSz,
                       height: 1.45,
-                      color: const Color(0xFF4B5563), // gray-600
+                      color: const Color(0xFFB8B8B8), // gray-600
                     ),
                   ),
                 ),
@@ -107,17 +108,20 @@ class WhyUsSection extends StatelessWidget {
                     }
 
                     // Stable card heights per breakpoint to prevent overflow
-                    final double cardHeight = switch (cross) {
-                      4 => 170, // desktop
-                      2 => 180, // tablet
-                      _ => 200, // phones
-                    };
+                    final bool useCircularCards = cross == 4;
+
+                    final double cardHeight = useCircularCards
+                        ? 240
+                        : switch (cross) {
+                            2 => 180,
+                            _ => 200,
+                          };
 
                     // Allow a bit more copy on phones where columns = 1
                     final int descLines = switch (cross) {
-                      4 => 3,
-                      2 => 3,
-                      _ => 4,
+                      4 => 5,
+                      2 => 4,
+                      _ => 5,
                     };
 
                     return GridView.builder(
@@ -139,6 +143,7 @@ class WhyUsSection extends StatelessWidget {
                           title: item.title,
                           description: item.description,
                           descMaxLines: descLines,
+                          isCircular: useCircularCards,
                         );
                       },
                     );
@@ -158,49 +163,65 @@ class _WhyTile extends StatelessWidget {
   final String title;
   final String description;
   final int descMaxLines;
+  final bool isCircular;
 
   const _WhyTile({
     required this.icon,
     required this.title,
     required this.description,
     this.descMaxLines = 3,
+    this.isCircular = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       elevation: 6,
-      borderRadius: BorderRadius.circular(18),
+      shape: isCircular
+          ? const CircleBorder()
+          : RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      clipBehavior: Clip.antiAlias,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
+          color: const Color(0xFF171717),
+          shape: isCircular ? BoxShape.circle : BoxShape.rectangle,
+          borderRadius: isCircular ? null : BorderRadius.circular(18),
+          border: Border.all(color: const Color(0xFF5A431E)),
           boxShadow: AppShadows.soft,
         ),
-        padding: const EdgeInsets.all(18),
+        padding: EdgeInsets.all(isCircular ? 28 : 18),
+
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: isCircular
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
+          crossAxisAlignment: isCircular
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
           children: [
             // icon badge
             Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFDBEAFE), // blue-100
-                borderRadius: BorderRadius.circular(14),
+              decoration: const BoxDecoration(
+                color: Color(0xFF2A2112),
+                shape: BoxShape.circle,
               ),
+
               padding: const EdgeInsets.all(10),
-              child: Icon(icon, color: AppColors.blue600, size: 24),
+              child: Icon(icon, color: const Color(0xFFD6A84B), size: 24),
             ),
             const SizedBox(height: 10),
 
             // Title kept to 2 lines to avoid overflow at small widths
             Text(
               title,
+              textAlign: isCircular ? TextAlign.center : TextAlign.start,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w800,
-                color: AppColors.gray900,
+                color: Colors.white,
                 height: 1.2,
               ),
             ),
@@ -210,11 +231,12 @@ class _WhyTile extends StatelessWidget {
             Expanded(
               child: Text(
                 description,
+                textAlign: isCircular ? TextAlign.center : TextAlign.start,
                 maxLines: descMaxLines,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 13,
-                  color: Color(0xFF6B7280), // gray-500/600
+                  color: Color(0xFFB8B8B8),
                   height: 1.45,
                 ),
               ),

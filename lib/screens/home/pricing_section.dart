@@ -36,8 +36,15 @@ class PricingSection extends StatelessWidget {
     return MediaQuery(
       data: clampedMQ,
       child: Container(
-        color: AppColors.white,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF050505), Color(0xFF111111), Color(0xFF050505)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 48),
+
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1200),
@@ -46,33 +53,50 @@ class PricingSection extends StatelessWidget {
                 // ---- Header ----
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
+                    horizontal: 20,
+                    vertical: 9,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFDBEAFE), // blue-100
+                    color: const Color(0xFF111111),
                     borderRadius: BorderRadius.circular(999),
+                    border: Border.all(
+                      color: const Color(0xFFD6A84B),
+                      width: 1.2,
+                    ),
                   ),
                   child: const Text(
-                    'Transparent Pricing',
+                    'TRANSPARENT PRICING',
                     style: TextStyle(
-                      color: AppColors.blue800,
-                      fontWeight: FontWeight.w700,
+                      color: Color(0xFFD6A84B),
+                      fontWeight: FontWeight.w800,
                       fontSize: 12,
+                      letterSpacing: 1.5,
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 12),
-                Text(
-                  'Choose Your Management Plan',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: titleSize,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.gray900,
-                    height: 1.2,
+                Text.rich(
+                  TextSpan(
+                    style: TextStyle(
+                      fontSize: titleSize,
+                      fontWeight: FontWeight.w800,
+                      height: 1.2,
+                    ),
+                    children: const [
+                      TextSpan(
+                        text: 'Choose Your ',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      TextSpan(
+                        text: 'Management Plan',
+                        style: TextStyle(color: Color(0xFFD6A84B)),
+                      ),
+                    ],
                   ),
+                  textAlign: TextAlign.center,
                 ),
+
                 const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -82,7 +106,7 @@ class PricingSection extends StatelessWidget {
                     style: TextStyle(
                       fontSize: subSize,
                       height: 1.45,
-                      color: const Color(0xFF4B5563), // gray-600
+                      color: const Color(0xFFB8B8B8),
                     ),
                   ),
                 ),
@@ -131,28 +155,47 @@ class PricingSection extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // Footer CTA under grid
-                Column(
-                  children: [
-                    Text(
-                      'Need a custom plan for multiple properties or special requirements?',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey.shade700,
-                        fontSize: 14,
-                      ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 14,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF151515),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: const Color(0xFF8F6B25),
+                      width: 1,
                     ),
-                    const SizedBox(height: 6),
-                    TextButton(
-                      onPressed: onGetStarted ?? () => _fallback(context),
-                      child: const Text(
-                        'Contact us for enterprise solutions →',
+                  ),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 28,
+                    runSpacing: 8,
+                    children: [
+                      const Text(
+                        'Need a custom plan for multiple properties or special requirements?',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: AppColors.blue600,
-                          fontWeight: FontWeight.w700,
+                          color: Color(0xFFB8B8B8),
+                          fontSize: 14,
                         ),
                       ),
-                    ),
-                  ],
+                      TextButton(
+                        onPressed: onGetStarted ?? () => _fallback(context),
+                        child: const Text(
+                          'CONTACT US FOR A CUSTOM SOLUTION  →',
+                          style: TextStyle(
+                            color: Color(0xFFD6A84B),
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -175,16 +218,33 @@ class _PricingCard extends StatelessWidget {
 
     final card = Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        gradient: LinearGradient(
+          colors: popular
+              ? const [Color(0xFF242018), Color(0xFF111111)]
+              : const [Color(0xFF1B1B1B), Color(0xFF0D0D0D)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: popular
-              ? AppColors.blue600
-              : const Color(0xFFE5E7EB), // gray-200
-          width: popular ? 4 : 2,
+          color: popular ? const Color(0xFFFFD978) : const Color(0xFF8F6B25),
+          width: popular ? 3 : 1.2,
         ),
-        boxShadow: popular ? AppShadows.medium : AppShadows.soft,
+        boxShadow: [
+          if (popular)
+            const BoxShadow(
+              color: Color(0x55D6A84B),
+              blurRadius: 26,
+              spreadRadius: 2,
+            ),
+          const BoxShadow(
+            color: Color(0x88000000),
+            blurRadius: 20,
+            offset: Offset(0, 12),
+          ),
+        ],
       ),
+
       padding: const EdgeInsets.fromLTRB(18, 24, 18, 18),
       child: Column(
         children: [
@@ -194,14 +254,21 @@ class _PricingCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               margin: const EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
-                gradient: AppGradients.blue,
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFFFFE7A3),
+                    Color(0xFFD6A84B),
+                    Color(0xFF9B6B18),
+                  ],
+                ),
                 borderRadius: BorderRadius.circular(999),
               ),
               child: const Text(
-                'Most Popular',
+                'MOST POPULAR',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF111111),
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.5,
                 ),
               ),
             ),
@@ -215,7 +282,7 @@ class _PricingCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w800,
-              color: AppColors.gray900,
+              color: Colors.white,
             ),
           ),
           const SizedBox(height: 6),
@@ -225,7 +292,7 @@ class _PricingCard extends StatelessWidget {
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              color: Color(0xFF6B7280),
+              color: Color(0xFFB8B8B8),
               fontSize: 13,
               height: 1.35,
             ),
@@ -238,7 +305,7 @@ class _PricingCard extends StatelessWidget {
               Text(
                 plan.price,
                 style: const TextStyle(
-                  color: AppColors.blue600,
+                  color: Color(0xFFD6A84B),
                   fontSize: 40,
                   fontWeight: FontWeight.w800,
                 ),
@@ -248,8 +315,9 @@ class _PricingCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             plan.period,
-            style: const TextStyle(color: Colors.black54, fontSize: 12),
+            style: const TextStyle(color: Color(0xFFB8B8B8), fontSize: 12),
           ),
+
           const SizedBox(height: 16),
 
           // Features (fills the available space in the card)
@@ -269,7 +337,7 @@ class _PricingCard extends StatelessWidget {
                       child: Icon(
                         Icons.check_circle_rounded,
                         size: 18,
-                        color: Colors.green,
+                        color: Color(0xFFD6A84B),
                       ),
                     ),
                     SizedBox(width: 8),
@@ -287,8 +355,9 @@ class _PricingCard extends StatelessWidget {
             child: popular
                 ? ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.blue600,
-                      foregroundColor: Colors.white,
+                      backgroundColor: const Color(0xFFD6A84B),
+                      foregroundColor: const Color(0xFF111111),
+
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -296,22 +365,23 @@ class _PricingCard extends StatelessWidget {
                       elevation: 10,
                     ),
                     onPressed: onGetStarted, // scroll to Contact
-                    child: const Text('Get Started'),
+                    child: const Text('GET STARTED'),
                   )
                 : OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(
-                        color: AppColors.blue600,
-                        width: 2,
+                        color: Color(0xFFD6A84B),
+                        width: 1.5,
                       ),
-                      foregroundColor: AppColors.blue600,
+                      foregroundColor: const Color(0xFFD6A84B),
+
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     onPressed: onGetStarted, // scroll to Contact
-                    child: const Text('Get Started'),
+                    child: const Text('GET STARTED'),
                   ),
           ),
         ],
@@ -335,7 +405,11 @@ class _FeatureText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text ?? '',
-      style: const TextStyle(fontSize: 14, color: Colors.black87, height: 1.35),
+      style: const TextStyle(
+        fontSize: 14,
+        color: Color(0xFFE0E0E0),
+        height: 1.35,
+      ),
     );
   }
 }

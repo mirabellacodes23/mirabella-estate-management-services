@@ -37,7 +37,7 @@ class ServicesSection extends StatelessWidget {
     return MediaQuery(
       data: clamped,
       child: Container(
-        color: AppColors.white,
+        color: const Color(0xFF0B0B0B),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 48),
         child: Center(
           child: ConstrainedBox(
@@ -53,7 +53,7 @@ class ServicesSection extends StatelessWidget {
                   style: TextStyle(
                     fontSize: subSize,
                     height: 1.45,
-                    color: Colors.grey.shade700,
+                    color: const Color(0xFFB8B8B8),
                   ),
                 ),
                 const SizedBox(height: 28),
@@ -88,6 +88,7 @@ class ServicesSection extends StatelessWidget {
                       itemBuilder: (context, i) {
                         final s = servicesData[i];
                         final icon = serviceIcons[i % serviceIcons.length];
+
                         return _ServiceCard(
                           icon: icon,
                           title: s.title,
@@ -97,6 +98,83 @@ class ServicesSection extends StatelessWidget {
                       },
                     );
                   },
+                ),
+                const SizedBox(height: 24),
+
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF171717),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFFD6A84B),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.payments_rounded,
+                            color: Color(0xFFD6A84B),
+                            size: 30,
+                          ),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Flexible Payment Plans',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Convenient payment options designed to make property transactions more manageable.',
+                        style: TextStyle(
+                          color: Color(0xFFB8B8B8),
+                          fontSize: 14,
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 16,
+                        children: const [
+                          _PaymentPlanTile(
+                            number: '01',
+                            text: '50% advance, remaining 50% within one month',
+                          ),
+                          _PaymentPlanTile(
+                            number: '02',
+                            text: 'Six instalments with two quarterly payments',
+                          ),
+                          _PaymentPlanTile(
+                            number: '03',
+                            text:
+                                '50% booking, remaining 50% in four quarterly payments (PKR 5M each)',
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        '* Terms and conditions apply',
+                        style: TextStyle(
+                          color: Color(0xFFD6A84B),
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -121,13 +199,13 @@ class _SectionHeader extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: const Color(0xFFDBEAFE), // blue-100
+            color: const Color(0xFF2A2112), // blue-100
             borderRadius: BorderRadius.circular(999),
           ),
           child: const Text(
-            'Our Services',
+            'WHAT MEMS PROVIDES',
             style: TextStyle(
-              color: AppColors.blue800,
+              color: Color(0xFFD6A84B),
               fontWeight: FontWeight.w700,
               fontSize: 12,
             ),
@@ -140,7 +218,7 @@ class _SectionHeader extends StatelessWidget {
           style: TextStyle(
             fontSize: titleSize,
             fontWeight: FontWeight.w800,
-            color: AppColors.gray900,
+            color: Colors.white,
             height: 1.2,
           ),
         ),
@@ -180,13 +258,11 @@ class _ServiceCardState extends State<_ServiceCard> {
             ? (Matrix4.identity()..translate(0.0, -6.0))
             : Matrix4.identity(),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: const Color(0xFF171717),
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: _hovered
-                ? const Color(0xFFBFDBFE)
-                : Colors.transparent, // blue-200
-            width: 2,
+            color: _hovered ? const Color(0xFFD6A84B) : const Color(0xFF3A3020),
+            width: _hovered ? 2 : 1,
           ),
           boxShadow: _hovered ? AppShadows.medium : AppShadows.soft,
         ),
@@ -197,11 +273,17 @@ class _ServiceCardState extends State<_ServiceCard> {
             // icon badge
             Container(
               decoration: BoxDecoration(
-                gradient: AppGradients.blueBr,
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFD6A84B), Color(0xFF9C6B18)],
+                ),
                 borderRadius: BorderRadius.circular(14),
               ),
               padding: const EdgeInsets.all(12),
-              child: Icon(widget.icon, color: Colors.white, size: 28),
+              child: Icon(
+                widget.icon,
+                color: const Color(0xFF111111),
+                size: 28,
+              ),
             ),
             const SizedBox(height: 12),
 
@@ -213,7 +295,7 @@ class _ServiceCardState extends State<_ServiceCard> {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
-                color: AppColors.gray900,
+                color: Colors.white,
                 height: 1.2,
               ),
             ),
@@ -227,7 +309,7 @@ class _ServiceCardState extends State<_ServiceCard> {
               style: const TextStyle(
                 fontSize: 14,
                 height: 1.45,
-                color: Color(0xFF6B7280), // gray-500/600
+                color: Color(0xFFB8B8B8), // gray-500/600
               ),
             ),
             const SizedBox(height: 10),
@@ -248,7 +330,7 @@ class _ServiceCardState extends State<_ServiceCard> {
                         child: Icon(
                           Icons.check_circle_rounded,
                           size: 16,
-                          color: Colors.green,
+                          color: Color(0xFFD6A84B),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -259,7 +341,7 @@ class _ServiceCardState extends State<_ServiceCard> {
                           style: const TextStyle(
                             fontSize: 13,
                             height: 1.35,
-                            color: Colors.black87,
+                            color: Color(0xFFE5E5E5),
                           ),
                         ),
                       ),
@@ -270,6 +352,60 @@ class _ServiceCardState extends State<_ServiceCard> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _PaymentPlanTile extends StatelessWidget {
+  final String number;
+  final String text;
+
+  const _PaymentPlanTile({required this.number, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 350,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0F0F0F),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFF3A3020)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 38,
+            height: 38,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: const Color(0xFF2A2112),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              number,
+              style: const TextStyle(
+                color: Color(0xFFD6A84B),
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: Color(0xFFE5E5E5),
+                fontSize: 13,
+                height: 1.45,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

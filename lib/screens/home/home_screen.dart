@@ -12,10 +12,13 @@ import '../../widgets/footer.dart';
 
 // Sections
 import 'hero_section.dart';
+import 'mems_intro_hero.dart';
 import 'stats_strip.dart';
 import 'news_section.dart';
 import 'services_section.dart';
+import 'office_location_section.dart';
 import 'process_section.dart';
+import 'mems_ad_section.dart';
 import 'pricing_section.dart';
 import 'faq_section.dart';
 import 'about_section.dart';
@@ -41,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Anchor keys
   final _homeKey = GlobalKey();
   final _servicesKey = GlobalKey();
+  final _whyUsKey = GlobalKey();
   final _processKey = GlobalKey();
   final _newsKey = GlobalKey();
   final _pricingKey = GlobalKey();
@@ -53,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final map = <String, GlobalKey>{
       'home': _homeKey,
       'services': _servicesKey,
+      'why': _whyUsKey,
       'process': _processKey,
       'news': _newsKey,
       'pricing': _pricingKey,
@@ -96,37 +101,21 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CustomScrollView(
                 controller: _scroll,
                 slivers: [
-                  const SliverToBoxAdapter(child: _TopBar()),
                   SliverToBoxAdapter(
-                    child: HeaderNav(
-                      onTapItem: _scrollTo,
-                      onToggleMenu: () =>
-                          setState(() => _mobileMenuOpen = !_mobileMenuOpen),
-                      isMobile: isMobile,
-                      mobileOpen: _mobileMenuOpen,
-                    ),
+                    child: MemsIntroHero(key: _homeKey, onNavTap: _scrollTo),
                   ),
-                  if (_mobileMenuOpen && isMobile)
-                    SliverToBoxAdapter(child: _MobileMenu(onTap: _scrollTo)),
 
-                  // Sections
-                  SliverToBoxAdapter(
-                    child: HeroSection(
-                      key: _homeKey,
-                      onPrimaryPressed: () => _scrollTo('contact'), // Contact
-                      onSecondaryPressed: () =>
-                          _scrollTo('services'), // Services
-                    ),
-                  ),
                   const SliverToBoxAdapter(child: StatsStrip()),
                   SliverToBoxAdapter(child: ServicesSection(key: _servicesKey)),
-                  const SliverToBoxAdapter(child: WhyUsSection()),
+                  SliverToBoxAdapter(child: WhyUsSection(key: _whyUsKey)),
+                  const SliverToBoxAdapter(child: OfficeLocationSection()),
                   SliverToBoxAdapter(
                     child: ProcessSection(
                       key: _processKey,
                       onGetStarted: () => _scrollTo('contact'), // → Contact
                     ),
                   ),
+                  const SliverToBoxAdapter(child: MemsAdSection()),
                   SliverToBoxAdapter(child: NewsSection(key: _newsKey)),
                   SliverToBoxAdapter(
                     child: PricingSection(
@@ -135,7 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  const SliverToBoxAdapter(child: FAQSection()),
+                  SliverToBoxAdapter(
+                    child: FAQSection(onContact: () => _scrollTo('contact')),
+                  ),
                   SliverToBoxAdapter(child: AboutSection(key: _aboutKey)),
                   SliverToBoxAdapter(child: ContactSection(key: _contactKey)),
                   const SliverToBoxAdapter(child: NewsletterStrip()),

@@ -28,7 +28,7 @@ class NewsSection extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      color: const Color(0xFF062F35),
+      color: const Color(0xFF0B0B0B),
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 20 : 64,
         vertical: isMobile ? 56 : 86,
@@ -69,7 +69,7 @@ class NewsSection extends StatelessWidget {
                   Text(
                     'WHAT WE DO',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.72),
+                      color: const Color(0xFFD6A84B),
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.5,
                       fontSize: 13,
@@ -115,9 +115,11 @@ class NewsSection extends StatelessWidget {
                     width: double.infinity,
                     padding: EdgeInsets.all(isMobile ? 20 : 26),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: const Color(0xFF171717),
                       borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: const Color(0xFF3A3020)),
                     ),
+
                     child: isMobile
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,14 +153,14 @@ class NewsSection extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.10),
+            color: const Color(0xFF2A2112),
             borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: Colors.white.withOpacity(0.16)),
+            border: Border.all(color: const Color(0xFF5A431E)),
           ),
           child: const Text(
             'ESTATE MANAGEMENT & PROJECT SOLUTIONS',
             style: TextStyle(
-              color: Color(0xFFB7F7E5),
+              color: Color(0xFFD6A84B),
               fontWeight: FontWeight.w800,
               letterSpacing: 0.9,
               fontSize: 12,
@@ -216,14 +218,14 @@ class NewsSection extends StatelessWidget {
       width: width,
       padding: const EdgeInsets.all(26),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.06),
+        color: const Color(0xFF171717),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.18)),
+        border: Border.all(color: const Color(0xFF3A3020)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: const Color(0xFFB7F7E5), size: 30),
+          Icon(icon, color: const Color(0xFFD6A84B), size: 30),
           const SizedBox(height: 22),
           Text(
             title,
@@ -255,7 +257,7 @@ class NewsSection extends StatelessWidget {
         Text(
           'Official Notices & Verified Information',
           style: TextStyle(
-            color: const Color(0xFF111827),
+            color: Colors.white,
             fontSize: isMobile ? 22 : 26,
             height: 1.2,
             fontWeight: FontWeight.w900,
@@ -264,7 +266,7 @@ class NewsSection extends StatelessWidget {
         const SizedBox(height: 10),
         const Text(
           'Authority-issued letters and official updates are shared as part of MEMS’ wider commitment to transparency, client awareness, and verified communication.',
-          style: TextStyle(color: Color(0xFF4B5563), fontSize: 16, height: 1.6),
+          style: TextStyle(color: Color(0xFFB8B8B8), fontSize: 16, height: 1.6),
         ),
       ],
     );
@@ -280,8 +282,9 @@ class NewsSection extends StatelessWidget {
           icon: const Icon(Icons.picture_as_pdf_rounded),
           label: const Text('View Official Notice'),
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.blue600,
-            foregroundColor: Colors.white,
+            backgroundColor: const Color(0xFFD6A84B),
+            foregroundColor: const Color(0xFF111111),
+
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
@@ -297,8 +300,9 @@ class NewsSection extends StatelessWidget {
           icon: const Icon(Icons.chat_rounded),
           label: const Text('Discuss Services'),
           style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.blue600,
-            side: const BorderSide(color: AppColors.blue600),
+            foregroundColor: const Color(0xFFD6A84B),
+            side: const BorderSide(color: Color(0xFFD6A84B)),
+
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),

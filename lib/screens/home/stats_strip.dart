@@ -19,7 +19,18 @@ class StatsStrip extends StatelessWidget {
     ];
 
     return Container(
-      decoration: const BoxDecoration(gradient: AppGradients.blue),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF6E4B13),
+            Color(0xFFD6A84F),
+            Color(0xFFFFD978),
+            Color(0xFF8F641A),
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
       child: Center(
         child: ConstrainedBox(
@@ -76,7 +87,7 @@ class _StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white.withOpacity(0.10),
+      color: const Color(0xFF151515),
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: Padding(
@@ -87,7 +98,7 @@ class _StatTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 28),
+            Icon(icon, color: const Color(0xFFD6A84F), size: 28),
             const SizedBox(height: 10),
             Text(
               number,
