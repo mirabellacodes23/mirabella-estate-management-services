@@ -446,24 +446,59 @@ class _TrustBadges extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.sizeOf(context).width < 600;
+
     return Container(
+      width: double.infinity,
       constraints: const BoxConstraints(maxWidth: 760),
-      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 8 : 26,
+        vertical: isMobile ? 12 : 18,
+      ),
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.42),
         border: Border.all(color: const Color(0x88D6A84F)),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const [
-          _Badge(Icons.shield_outlined, 'SECP\nREGISTERED'),
-          _DividerGold(),
-          _Badge(Icons.verified_outlined, 'RDA / IBMS\nAPPROVED'),
-          _DividerGold(),
-          _Badge(Icons.groups_rounded, '3S NETWORK\nPARTNERS'),
-        ],
-      ),
+      child: isMobile
+          ? const Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: _Badge(
+                    Icons.shield_outlined,
+                    'SECP\nREGISTERED',
+                    compact: true,
+                  ),
+                ),
+                _DividerGold(height: 58),
+                Expanded(
+                  child: _Badge(
+                    Icons.verified_outlined,
+                    'RDA / IBMS\nAPPROVED',
+                    compact: true,
+                  ),
+                ),
+                _DividerGold(height: 58),
+                Expanded(
+                  child: _Badge(
+                    Icons.groups_rounded,
+                    '3S NETWORK\nPARTNERS',
+                    compact: true,
+                  ),
+                ),
+              ],
+            )
+          : const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _Badge(Icons.shield_outlined, 'SECP\nREGISTERED'),
+                _DividerGold(),
+                _Badge(Icons.verified_outlined, 'RDA / IBMS\nAPPROVED'),
+                _DividerGold(),
+                _Badge(Icons.groups_rounded, '3S NETWORK\nPARTNERS'),
+              ],
+            ),
     );
   }
 }
@@ -471,11 +506,33 @@ class _TrustBadges extends StatelessWidget {
 class _Badge extends StatelessWidget {
   final IconData icon;
   final String text;
+  final bool compact;
 
-  const _Badge(this.icon, this.text);
+  const _Badge(this.icon, this.text, {this.compact = false});
 
   @override
   Widget build(BuildContext context) {
+    if (compact) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: const Color(0xFFD6A84F), size: 27),
+          const SizedBox(height: 6),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              height: 1.25,
+            ),
+          ),
+        ],
+      );
+    }
+
     return Row(
       children: [
         Icon(icon, color: const Color(0xFFD6A84F), size: 34),
@@ -494,11 +551,13 @@ class _Badge extends StatelessWidget {
 }
 
 class _DividerGold extends StatelessWidget {
-  const _DividerGold();
+  final double height;
+
+  const _DividerGold({this.height = 42});
 
   @override
   Widget build(BuildContext context) {
-    return Container(width: 1, height: 42, color: const Color(0x66D6A84F));
+    return Container(width: 1, height: height, color: const Color(0x66D6A84F));
   }
 }
 
