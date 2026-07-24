@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../constants/tokens.dart';
 import '../../widgets/header_nav.dart';
 import '../../widgets/footer.dart';
+import '../plot_finder/plot_finder_screen.dart';
 
 // Sections
 import 'hero_section.dart';
@@ -102,7 +103,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: _scroll,
                 slivers: [
                   SliverToBoxAdapter(
-                    child: MemsIntroHero(key: _homeKey, onNavTap: _scrollTo),
+                    child: MemsIntroHero(
+                      key: _homeKey,
+                      onNavTap: _scrollTo,
+                      onPlotFinderTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const PlotFinderScreen(),
+                          ),
+                        );
+                      },
+                    ),
                   ),
 
                   const SliverToBoxAdapter(child: StatsStrip()),

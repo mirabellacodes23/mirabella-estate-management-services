@@ -3,8 +3,9 @@ import 'package:video_player/video_player.dart';
 
 class MemsIntroHero extends StatefulWidget {
   final void Function(String id)? onNavTap;
+  final VoidCallback? onPlotFinderTap;
 
-  const MemsIntroHero({super.key, this.onNavTap});
+  const MemsIntroHero({super.key, this.onNavTap, this.onPlotFinderTap});
 
   @override
   State<MemsIntroHero> createState() => _MemsIntroHeroState();
@@ -40,7 +41,7 @@ class _MemsIntroHeroState extends State<MemsIntroHero> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height + 110,
+      height: MediaQuery.of(context).size.height + 165,
       width: double.infinity,
       child: Stack(
         fit: StackFit.expand,
@@ -95,8 +96,12 @@ class _MemsIntroHeroState extends State<MemsIntroHero> {
                         ),
                         SizedBox(height: 26),
                         _TrustBadges(),
-                        SizedBox(height: 32),
-                        _ScrollHint(),
+                        const SizedBox(height: 14),
+
+                        _PlotFinderPlate(onTap: widget.onPlotFinderTap),
+
+                        const SizedBox(height: 12),
+                        const _ScrollHint(),
                       ],
                     ),
                   ),
@@ -558,6 +563,112 @@ class _DividerGold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(width: 1, height: height, color: const Color(0x66D6A84F));
+  }
+}
+
+class _PlotFinderPlate extends StatefulWidget {
+  final VoidCallback? onTap;
+
+  const _PlotFinderPlate({this.onTap});
+
+  @override
+  State<_PlotFinderPlate> createState() => _PlotFinderPlateState();
+}
+
+class _PlotFinderPlateState extends State<_PlotFinderPlate> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = MediaQuery.sizeOf(context).width < 600;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedScale(
+        scale: _hovered ? 1.025 : 1,
+        duration: const Duration(milliseconds: 180),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: widget.onTap,
+            borderRadius: BorderRadius.circular(9),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              width: isMobile ? 255 : 270,
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 15 : 20,
+                vertical: isMobile ? 10 : 12,
+              ),
+
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: _hovered
+                      ? const [
+                          Color(0xFFFFE08A),
+                          Color(0xFFD6A84F),
+                          Color(0xFF9B6D18),
+                        ]
+                      : const [
+                          Color(0xFFE8BD63),
+                          Color(0xFFD6A84F),
+                          Color(0xFFA87820),
+                        ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(9),
+                border: Border.all(color: const Color(0xFFFFE6A3), width: 1.2),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(
+                      0xFFD6A84F,
+                    ).withOpacity(_hovered ? 0.48 : 0.28),
+                    blurRadius: _hovered ? 26 : 18,
+                    spreadRadius: _hovered ? 2 : 0,
+                  ),
+                  const BoxShadow(
+                    color: Color(0x99000000),
+                    blurRadius: 14,
+                    offset: Offset(0, 7),
+                  ),
+                ],
+              ),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.location_on_rounded,
+                    color: const Color(0xFF17130A),
+                    size: isMobile ? 20 : 23,
+                  ),
+                  SizedBox(width: isMobile ? 8 : 10),
+                  Text(
+                    'EXPLORE PLOTS',
+                    maxLines: 1,
+                    style: TextStyle(
+                      color: const Color(0xFF17130A),
+                      fontSize: isMobile ? 15 : 17,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: isMobile ? 1 : 1.4,
+                    ),
+                  ),
+                  SizedBox(width: isMobile ? 8 : 10),
+                  Icon(
+                    Icons.arrow_forward_rounded,
+                    color: const Color(0xFF17130A),
+                    size: isMobile ? 20 : 23,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
